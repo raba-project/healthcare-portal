@@ -1,0 +1,72 @@
+CREATE DATABASE healthcare_portal;
+USE healthcare_portal;
+
+
+CREATE TABLE users (
+user_id INT AUTO_INCREMENT PRIMARY KEY,
+username VARCHAR(50) UNIQUE NOT NULL,
+password VARCHAR(100) NOT NULL,
+email VARCHAR(100) UNIQUE NOT NULL,
+phone VARCHAR(15),
+role ENUM('PATIENT','DOCTOR','ADMIN') NOT NULL
+);
+
+
+CREATE TABLE departments (
+dept_id INT AUTO_INCREMENT PRIMARY KEY,
+name VARCHAR(50) NOT NULL UNIQUE
+);
+
+
+CREATE TABLE doctors (
+doctor_id INT AUTO_INCREMENT PRIMARY KEY,
+user_id INT NOT NULL,
+dept_id INT,
+specialization VARCHAR(100),
+availability VARCHAR(255),
+FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE,
+FOREIGN KEY (dept_id) REFERENCES departments(dept_id)
+);
+
+
+CREATE TABLE patients (
+patient_id INT AUTO_INCREMENT PRIMARY KEY,
+user_id INT NOT NULL,
+age INT,
+gender VARCHAR(10),
+blood_group VARCHAR(5),
+FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE
+);
+
+
+CREATE TABLE appointments (
+appointment_id INT AUTO_INCREMENT PRIMARY KEY,
+patient_id INT NOT NULL,
+doctor_id INT NOT NULL,
+appointment_date DATETIME NOT NULL,
+status ENUM('BOOKED','COMPLETED','CANCELLED') DEFAULT 'BOOKED',
+created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+FOREIGN KEY (patient_id) REFERENCES patients(patient_id) ON DELETE CASCADE,
+FOREIGN KEY (doctor_id) REFERENCES doctors(doctor_id) ON DELETE CASCADE
+);
+
+
+CREATE TABLE prescriptions (
+prescription_id INT AUTO_INCREMENT PRIMARY KEY,
+appointment_id INT NOT NULL,
+doctor_notes TEXT,
+medicines TEXT,
+created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+FOREIGN KEY (appointment_id) REFERENCES appointments(appointment_id) ON DELETE CASCADE
+);
+
+
+CREATE TABLE bills (
+bill_id INT AUTO_INCREMENT PRIMARY KEY,
+appointment_id INT NOT NULL,
+amount DECIMAL(10,2) NOT NULL,
+status ENUM('PENDING','SUCCESS','FAILED') DEFAULT 'PENDING',
+transaction_ref VARCHAR(100),
+created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+FOREIGN KEY (appointment_id) REFERENCES appointments(appointment_id) ON DELETE CASCADE
+);
