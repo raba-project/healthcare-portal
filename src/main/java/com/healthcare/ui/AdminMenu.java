@@ -23,10 +23,11 @@ public class AdminMenu {
                     System.out.println("Department added.");
                     break;
                 case 2:
+                	int docUsertId = ConsoleUtils.readInt("Enter User ID: ");
                     int deptId = ConsoleUtils.readInt("Enter Department ID: ");
                     String specialization = ConsoleUtils.readLine("Enter Specialization: ");
                     String availability = ConsoleUtils.readLine("Enter Availability: ");
-                    Doctor d = new Doctor(0, user.getUserId(), deptId, specialization, availability);
+                    Doctor d = new Doctor(0, docUsertId, deptId, specialization, availability);
                     adminService.addDoctor(d);
                     System.out.println("Doctor added.");
                     break;

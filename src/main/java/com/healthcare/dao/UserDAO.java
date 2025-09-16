@@ -5,15 +5,9 @@ import com.healthcare.model.User;
 import java.sql.*;
 
 public class UserDAO {
-    private final Connection conn;
-
-    public UserDAO() throws SQLException {
-        this.conn = DBConnection.getInstance().getConnection();
-    }
-
     public User createUser(User user) throws SQLException {
         String sql = "INSERT INTO users (username, password, email, phone, role) VALUES (?, ?, ?, ?, ?)";
-        try (PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+        try (Connection conn = DBConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             ps.setString(1, user.getUsername());
             ps.setString(2, user.getPassword());
             ps.setString(3, user.getEmail());
@@ -31,7 +25,7 @@ public class UserDAO {
 
     public User findByUsername(String username) throws SQLException {
         String sql = "SELECT * FROM users WHERE username = ?";
-        try (PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (Connection conn = DBConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, username);
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {

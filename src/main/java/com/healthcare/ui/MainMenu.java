@@ -1,9 +1,10 @@
 package com.healthcare.ui;
 
+import com.healthcare.model.Role;
 import com.healthcare.model.User;
 import com.healthcare.service.AuthenticationService;
 import com.healthcare.ui.*;
-
+import java.sql.SQLException;
 import java.util.Scanner;
 
 public class MainMenu {
@@ -65,6 +66,9 @@ public class MainMenu {
         user.setRole(com.healthcare.model.Role.valueOf(role));
 
         authService.register(user);
+        if(user.getRole() == Role.PATIENT) {
+            new PatientMenu().addPatient(user);
+	    }
         System.out.println("Registered with id: " + user.getUserId());
     }
 

@@ -1,6 +1,7 @@
 package com.healthcare.dao;
 
 import com.healthcare.model.Doctor;
+import com.healthcare.model.Patient;
 import com.healthcare.dao.DBConnection;
 
 import java.sql.*;
@@ -68,5 +69,24 @@ public class DoctorDAO {
             }
         }
         return list;
+    }
+    
+    public Doctor findByUserId(int userId) throws SQLException {
+        String sql = "SELECT * FROM doctors WHERE user_id = ?";
+        try (Connection conn = DBConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, userId);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    Doctor d = new Doctor();
+                    d.setUserId(rs.getInt("user_id"));
+                    d.setDoctorId(rs.getInt("doctor_id"));
+                    d.setDeptId(rs.getInt("dept_id"));
+                    d.setSpecialization(rs.getString("specialization"));
+                    d.setAvailability(rs.getString("availability"));
+                    return d;
+                }
+            }
+        }
+        return null;
     }
 }

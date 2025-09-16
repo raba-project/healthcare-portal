@@ -17,10 +17,10 @@ public class DBConnection {
         connection = DriverManager.getConnection(url, username, password);
     }
 
-    public static DBConnection getInstance() throws SQLException {
-        if (instance == null) {
+    private static DBConnection getInstance() throws SQLException {
+        if (instance == null || connection == null || connection.isClosed()) {
             synchronized (DBConnection.class) {
-                if (instance == null) {
+                if (instance == null || connection == null || connection.isClosed()) {
                     instance = new DBConnection();
                 }
             }
@@ -33,7 +33,7 @@ public class DBConnection {
             synchronized (DBConnection.class) {
                 if (connection == null || connection.isClosed()) {
                     // Recreate connection if null or closed
-                    DBConnection.getInstance();
+                	DBConnection.getInstance();
                 }
             }
         }

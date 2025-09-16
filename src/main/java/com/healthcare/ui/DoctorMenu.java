@@ -8,6 +8,7 @@ public class DoctorMenu {
     private DoctorDAO doctorDAO = new DoctorDAO();
 
     public void show(User user) throws Exception {
+    	Doctor doctor = doctorDAO.findByUserId(user.getUserId());
         while (true) {
             System.out.println("\n--- Doctor Menu ---");
             System.out.println("1. Update Availability");
@@ -17,7 +18,7 @@ public class DoctorMenu {
             switch (choice) {
                 case 1:
                     String avail = ConsoleUtils.readLine("Enter Availability: ");
-                    doctorDAO.updateAvailability(user.getUserId(), avail);
+                    doctorDAO.updateAvailability(doctor.getDoctorId(), avail);
                     System.out.println("Availability updated.");
                     break;
                 case 0:

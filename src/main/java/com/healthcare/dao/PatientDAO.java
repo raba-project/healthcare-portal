@@ -1,6 +1,8 @@
 package com.healthcare.dao;
 
 import com.healthcare.model.Patient;
+import com.healthcare.model.Role;
+import com.healthcare.model.User;
 import com.healthcare.dao.DBConnection;
 
 import java.sql.*;
@@ -12,12 +14,17 @@ public class PatientDAO {
     public void addPatient(Patient patient) throws SQLException {
         String sql = "INSERT INTO patients (user_id, age, gender, blood_group) VALUES (?,?,?,?)";
         try (Connection conn = DBConnection.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+             PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             ps.setInt(1, patient.getUserId());
             ps.setInt(2, patient.getAge());
             ps.setString(3, patient.getGender());
             ps.setString(4, patient.getBloodGroup());
             ps.executeUpdate();
+            try (ResultSet rs = ps.getGeneratedKeys()) {
+                if (rs.next()) {
+                	patient.setPatientId(rs.getInt(1));
+                }
+            }
         }
     }
 
@@ -39,5 +46,24 @@ public class PatientDAO {
             }
         }
         return list;
+    }
+    
+    public Patient findByUserId(int userId) throws SQLException {
+        String sql = "SELECT * FROM patients WHERE user_id = ?";
+        try (Connection conn = DBConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, userId);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    Patient p = new Patient();
+                    p.setUserId(rs.getInt("user_id"));
+                    p.setPatientId(rs.getInt("patient_id"));
+                    p.setAge(rs.getInt("age"));
+                    p.setGender(rs.getString("gender"));
+                    p.setBloodGroup(rs.getString("blood_group"));
+                    return p;
+                }
+            }
+        }
+        return null;
     }
 }
