@@ -1,7 +1,9 @@
-package login;
+package com.healthcare.ui;
 
 import java.sql.*;
 import java.util.Scanner;
+
+import com.healthcare.dao.DBConnection;
 
 public class Doctor_login {
     private static final String url = "jdbc:mysql://localhost:3306/project";
@@ -16,9 +18,7 @@ public class Doctor_login {
 
 
               String query="Insert into users(username,password,email,phone,role) values (?,?,?,?,'Doctor')";
-              try {
-                  Class.forName("com.mysql.cj.jdbc.Driver");
-                  con = DriverManager.getConnection(url, user,pass);
+              try (Connection con = DBConnection.getConnection();){
                   prSt = con.prepareStatement(query);
                   prSt.setString(1, name);
                   prSt.setString(2, password);
@@ -44,8 +44,6 @@ public class Doctor_login {
               }
               catch (SQLException ex) {
                   System.out.println(ex.getMessage());
-              } catch (ClassNotFoundException e) {
-                  throw new RuntimeException(e);
               }
     }
 
@@ -54,9 +52,7 @@ public class Doctor_login {
     public static void Appointments(int doc_id){
         //Select appointment_id,patient_id ,status from appointments where doctor_id=2 and DATE(appointment_date) = CURDATE();
         String query3=" Select appointment_id,patient_id ,status from appointments where doctor_id=? and DATE(appointment_date) = CURDATE()";
-        try{
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            con = DriverManager.getConnection(url, user, pass);
+        try (Connection con = DBConnection.getConnection();){
             prSt = con.prepareStatement(query3);
             prSt.setInt(1,doc_id);
             ResultSet rs = stmt.executeQuery(query3);
@@ -77,16 +73,12 @@ public class Doctor_login {
 
         }catch (SQLException e){
             System.out.println(e.getMessage());
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException(e);
         }
 
     }
     public static void prescribe(int id){
         String query4="Update prescriptions set medicines =?,doctor_notes=? where prescription_id=?";
-        try {
-             Class.forName("com.mysql.cj.jdbc.Driver");//necessary for jar files
-             con = DriverManager.getConnection(url, user, pass);
+        try (Connection con = DBConnection.getConnection();){
             prSt = con.prepareStatement(query4);
             Scanner sc=new Scanner(System.in);
             System.out.print("Enter medicines");
@@ -113,9 +105,6 @@ public class Doctor_login {
 
         }catch (SQLException e){
             System.out.println(e.getMessage());
-        }
-        catch (ClassNotFoundException c){
-            System.out.println("class not found for jdbc please attach jar file");
         }
         }
 
@@ -171,9 +160,7 @@ public class Doctor_login {
     }
 
     private static void available(int doctorId) {
-        try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            con = DriverManager.getConnection(url, user, pass);
+        try (Connection con = DBConnection.getConnection();){
             String query6 = "Select availability from doctors where doctor_id=?";
             PreparedStatement pst = con.prepareStatement(query6);
             pst.setInt(1, doctorId);
@@ -190,8 +177,6 @@ public class Doctor_login {
                 System.out.println("Doctor ID not found.");
             }
         } catch (SQLException e) {
-            throw new RuntimeException(e);
-        } catch (ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
 
