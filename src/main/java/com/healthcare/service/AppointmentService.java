@@ -2,8 +2,10 @@ package com.healthcare.service;
 
 import com.healthcare.dao.AppointmentDAO;
 import com.healthcare.dao.DoctorDAO;
+import com.healthcare.dao.PrescriptionDAO;
 import com.healthcare.model.Appointment;
 import com.healthcare.model.Doctor;
+import com.healthcare.model.Prescription;
 
 import java.sql.SQLException;
 import java.sql.Timestamp;
@@ -14,11 +16,13 @@ public class AppointmentService {
 
     public void bookAppointment(int patientId, int doctorId, Timestamp date) throws SQLException {
     	Doctor doctor = new DoctorDAO().findByUserId(doctorId);
-    	if(!doctor.getAvailability().equals("Available")) {
-    		throw new SQLException("Doctor is Unavailable! Appointment not Booked", "42000", 999);
-    	}
+//    	if(!doctor.getAvailability().equals("Available")) {
+//    		throw new SQLException("Doctor is Unavailable! Appointment not Booked", "42000", 999);
+//    	}
         Appointment a = new Appointment(0, patientId, doctorId, date, "BOOKED");
-        appointmentDAO.addAppointment(a);
+        Appointment returnedAppointment = appointmentDAO.addAppointment(a);
+        Prescription p = new Prescription(0, returnedAppointment.getAppointmentId() , "", "");
+        new PrescriptionDAO().addPrescription(p);
     }
 
     public List<Appointment> getAllAppointments() throws SQLException {

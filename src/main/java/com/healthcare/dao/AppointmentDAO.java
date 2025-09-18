@@ -9,16 +9,23 @@ import java.util.List;
 
 public class AppointmentDAO {
 
-    public void addAppointment(Appointment appointment) throws SQLException {
+    public Appointment addAppointment(Appointment appointment) throws SQLException {
         String sql = "INSERT INTO appointments (patient_id, doctor_id, appointment_date, status) VALUES (?,?,?,?)";
         try (Connection conn = DBConnection.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+             PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             ps.setInt(1, appointment.getPatientId());
             ps.setInt(2, appointment.getDoctorId());
             ps.setTimestamp(3, appointment.getAppointmentDate());
             ps.setString(4, appointment.getStatus());
             ps.executeUpdate();
+            try (ResultSet rs = ps.getGeneratedKeys()) {
+                if (rs.next()) {
+                	appointment.setAppointmentId(rs.getInt(1));
+                }
+            }
         }
+        System.out.println(appointment.getAppointmentId());
+        return appointment;
     }
 
     public List<Appointment> getAppointments() throws SQLException {

@@ -55,16 +55,15 @@ public class Doctor_login {
         try (Connection con = DBConnection.getConnection();){
             prSt = con.prepareStatement(query3);
             prSt.setInt(1,doc_id);
-            ResultSet rs = stmt.executeQuery(query3);
+            ResultSet rs = prSt.executeQuery();
             stmt = con.createStatement();
            while (rs.next()) {
                 int id = rs.getInt("appointment_id");
                 int appointment = rs.getInt("patient_id");
                 int doctor = rs.getInt("doctor_id");
-                String phone = rs.getString("phone");
+                String phone = rs.getString("status");
                 System.out.println(id + "   " + appointment + "   " + doctor + "   " + phone);
-            }
-            System.out.print("done");
+            } 
 
             //rs.close();
             //stmt.close();
@@ -87,9 +86,12 @@ public class Doctor_login {
             String note=sc.next();
             prSt.setString(1,med);
             prSt.setString(2,note);
+            
+            
             prSt.setInt(3,id);
             String query5="Select * from prescriptions";
             stmt = con.createStatement();
+            int count=prSt.executeUpdate();
             ResultSet rs = stmt.executeQuery(query5);
             while (rs.next()) {
                 String uname = rs.getString("appointment_id");
@@ -151,8 +153,8 @@ public class Doctor_login {
               case 4:
                   System.out.println("Enter Doctors id->");
                   doctor_id=sc.nextInt();
-                 available(doctor_id);
-
+                  available(doctor_id);
+                  break;
               default:
                   System.out.println("select appropriate option");
       }

@@ -12,7 +12,7 @@ public class AppointmentServiceTest {
 
     @Test
     public void testBookAppointment() throws Exception {
-        service.bookAppointment(1, 1, new Timestamp(new Date().getTime()));
+        service.bookAppointment(1, 2, new Timestamp(new Date().getTime()));
         Assert.assertTrue(service.getAllAppointments().size() > 0);
     }
 }

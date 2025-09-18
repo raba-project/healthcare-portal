@@ -1,0 +1,4 @@
+com\healthcare\service\AppointmentServiceTest.class
+com\healthcare\dao\UserDAOTest.class
+com\healthcare\ui\doctormodule_test.class
+com\healthcare\dao\DoctorDAOTest.class
