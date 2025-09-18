@@ -3,9 +3,9 @@
 <suite name="HealthcareTestSuite">
     <test name="DAO Tests">
         <classes>
-            <class name="com.healthcare.test.dao.UserDAOTest"/>
-            <class name="com.healthcare.test.dao.DoctorDAOTest"/>
-            <class name="com.healthcare.test.service.AppointmentServiceTest"/>
+            <class name="com.healthcare.dao.UserDAOTest"/>
+            <class name="com.healthcare.dao.DoctorDAOTest"/>
+            <class name="com.healthcare.service.AppointmentServiceTest"/>
         </classes>
     </test>
 </suite>

@@ -8,6 +8,7 @@ import com.healthcare.dao.*;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.Date;
+import java.util.List;
 
 public class PatientMenu {
     private AppointmentService appointmentService = new AppointmentService();
@@ -19,19 +20,29 @@ public class PatientMenu {
         while (true) {
             System.out.println("\n--- Patient Menu ---");
             System.out.println("1. Book Appointment");
-            System.out.println("2. View Bills");
+            System.out.println("2. Cancel Appointment");
+            System.out.println("3. View Doctors");
             System.out.println("0. Logout");
 
             int choice = ConsoleUtils.readInt("Enter choice: ");
             switch (choice) {
                 case 1:
                     int doctorId = ConsoleUtils.readInt("Enter Doctor ID: ");
-                    appointmentService.bookAppointment(patient.getPatientId(), doctorId, new Timestamp(new Date().getTime()));
-                    System.out.println("Appointment booked!");
+                    int id = appointmentService.bookAppointment(patient.getPatientId(), doctorId, new Timestamp(new Date().getTime()));
+                    System.out.println("Appointment booked! with ID : " + id);
                     break;
                 case 2:
                     int apptId = ConsoleUtils.readInt("Enter Appointment ID: ");
-                    System.out.println("Bill: $" + billingService.getBill(apptId));
+                    appointmentService.cancelAppointment(apptId);
+                    System.out.println("Appointment cancelled!");
+                    break;
+                case 3:
+                    List<Doctor> doctors = new DoctorDAO().getAllDoctors();
+                    System.out.println("Doctors:");
+                    System.out.println("DocID" + "  " + "Specialization" + "  " + "Availability");
+                    for(Doctor d : doctors) {
+                    	System.out.println(d.getDoctorId() + "  " + d.getUserId() + "  " + d.getSpecialization() + "  " + d.getDeptId() + "  " + d.getAvailability());
+                    }
                     break;
                 case 0:
                     return;

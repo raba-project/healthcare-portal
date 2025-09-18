@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite name="Failed suite [HealthcareTestSuite]" guice-stage="DEVELOPMENT">
+  <test thread-count="5" name="DAO Tests(failed)">
+    <classes>
+      <class name="com.healthcare.dao.DoctorDAOTest">
+        <methods>
+          <include name="testGetAllDoctors"/>
+        </methods>
+      </class> <!-- com.healthcare.dao.DoctorDAOTest -->
+      <class name="com.healthcare.dao.UserDAOTest">
+        <methods>
+          <include name="testAddAndGetUser"/>
+        </methods>
+      </class> <!-- com.healthcare.dao.UserDAOTest -->
+    </classes>
+  </test> <!-- DAO Tests(failed) -->
+</suite> <!-- Failed suite [HealthcareTestSuite] -->

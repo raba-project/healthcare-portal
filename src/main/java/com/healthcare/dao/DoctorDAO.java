@@ -89,4 +89,23 @@ public class DoctorDAO {
         }
         return null;
     }
+    
+    public Doctor findByDoctorId(int doctorId) throws SQLException {
+        String sql = "SELECT * FROM doctors WHERE doctor_id = ?";
+        try (Connection conn = DBConnection.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, doctorId);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    Doctor d = new Doctor();
+                    d.setUserId(rs.getInt("user_id"));
+                    d.setDoctorId(rs.getInt("doctor_id"));
+                    d.setDeptId(rs.getInt("dept_id"));
+                    d.setSpecialization(rs.getString("specialization"));
+                    d.setAvailability(rs.getString("availability"));
+                    return d;
+                }
+            }
+        }
+        return null;
+    }
 }

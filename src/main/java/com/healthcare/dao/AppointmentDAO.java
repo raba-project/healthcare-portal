@@ -47,4 +47,14 @@ public class AppointmentDAO {
         }
         return list;
     }
+    
+    public void cancelAppointment(int apptId) throws SQLException {
+    	String sql = "UPDATE appointments SET status=? WHERE appointment_id=?";
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, "CANCELLED");
+            ps.setInt(2, apptId);
+            ps.executeUpdate();
+        }
+    }
 }

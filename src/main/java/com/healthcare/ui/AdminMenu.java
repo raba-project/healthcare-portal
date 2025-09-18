@@ -3,6 +3,9 @@ package com.healthcare.ui;
 import com.healthcare.model.Doctor;
 import com.healthcare.service.AdminService;
 import com.healthcare.ui.ConsoleUtils;
+
+import java.util.List;
+
 import com.healthcare.model.*;
 
 public class AdminMenu {
@@ -19,7 +22,12 @@ public class AdminMenu {
             switch (choice) {
                 case 1:
                     String dept = ConsoleUtils.readLine("Enter Department Name: ");
-                    adminService.addDepartment(dept);
+                    List<Department> depts = adminService.addDepartment(dept);
+                    
+                    System.out.println("Departments:");
+                    for(Department d : depts) {
+                    	System.out.println(d.getName());
+                    }
                     System.out.println("Department added.");
                     break;
                 case 2:

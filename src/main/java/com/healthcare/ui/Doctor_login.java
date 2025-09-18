@@ -57,12 +57,14 @@ public class Doctor_login {
             prSt.setInt(1,doc_id);
             ResultSet rs = prSt.executeQuery();
             stmt = con.createStatement();
+            System.out.println("id" + "   " + "patient" +  " " + "status");
            while (rs.next()) {
                 int id = rs.getInt("appointment_id");
-                int appointment = rs.getInt("patient_id");
-                int doctor = rs.getInt("doctor_id");
-                String phone = rs.getString("status");
-                System.out.println(id + "   " + appointment + "   " + doctor + "   " + phone);
+                int patient = rs.getInt("patient_id");
+//                int doctor = rs.getInt("doctor_id");
+                String status = rs.getString("status");
+//                System.out.println(id + "   " + appointment + "   " + doctor + "   " + phone);
+                System.out.println(id + "    " + patient +  "    " + status);
             } 
 
             //rs.close();
@@ -81,9 +83,9 @@ public class Doctor_login {
             prSt = con.prepareStatement(query4);
             Scanner sc=new Scanner(System.in);
             System.out.print("Enter medicines");
-            String med=sc.next();
+            String med=sc.nextLine();
             System.out.println("Enter notes");
-            String note=sc.next();
+            String note=sc.nextLine();
             prSt.setString(1,med);
             prSt.setString(2,note);
             
@@ -171,7 +173,7 @@ public class Doctor_login {
             if (rs.next()) {
                 String availability = rs.getString("availability");
                 if (availability != null && !availability.isEmpty()) {
-                    System.out.println("Doctor is available: " + availability);
+                    System.out.println("Doctor availability: " + availability);
                 } else {
                     System.out.println("Doctor is not available right now.");
                 }

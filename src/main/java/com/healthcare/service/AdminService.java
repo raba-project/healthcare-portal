@@ -12,8 +12,9 @@ public class AdminService {
     private DepartmentDAO deptDAO = new DepartmentDAO();
     private DoctorDAO doctorDAO = new DoctorDAO();
 
-    public void addDepartment(String name) throws SQLException {
+    public List<Department> addDepartment(String name) throws SQLException {
         deptDAO.addDepartment(new Department(0, name));
+        return deptDAO.getAllDepartments();
     }
 
     public List<Department> getDepartments() throws SQLException {
